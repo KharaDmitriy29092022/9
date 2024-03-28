@@ -1,0 +1,57 @@
+#include <iostream>
+
+// Функція, яка знаходить підрядок у рядку і повертає його позицію
+size_t custom_find(const char* str, const char* substr) {
+    if (!str || !substr)
+        return std::string::npos; // Якщо вхідні рядки пусті, повертаємо npos
+
+    size_t str_len = 0;
+    size_t substr_len = 0;
+
+    // Обчислюємо довжини рядків
+    while (str[str_len] != '\0') str_len++;
+    while (substr[substr_len] != '\0') substr_len++;
+
+    // Якщо підрядок довший за рядок, повертаємо npos
+    if (substr_len > str_len)
+        return std::string::npos;
+
+    // Проходимо по рядку і шукаємо підрядок
+    for (size_t i = 0; i <= str_len - substr_len; ++i) {
+        size_t j;
+        // Перевіряємо, чи підрядок збігається з поточною позицією у рядку
+        for (j = 0; j < substr_len; ++j) {
+            if (str[i + j] != substr[j])
+                break;
+        }
+        // Якщо підрядок знайдено, повертаємо його позицію
+        if (j == substr_len)
+            return i;
+    }
+
+    // Якщо підрядок не знайдено, повертаємо npos
+    return std::string::npos;
+}
+
+int main() {
+    char str[100];
+    std::string substr;
+
+    // Зчитуємо рядок з консолі
+    std::cout << "Enter a string: ";
+    std::cin.getline(str, 100);
+
+    // Зчитуємо підрядок з консолі
+    std::cout << "Enter a substring to find: ";
+    std::cin >> substr;
+
+    // Викликаємо власну функцію та функцію find() класу string
+    size_t custom_pos = custom_find(str, substr.c_str());
+    size_t string_pos = std::string(str).find(substr);
+
+    // Виводимо результати
+    std::cout << "Custom find result: " << custom_pos << std::endl;
+    std::cout << "String find result: " << string_pos << std::endl;
+
+    return 0;
+}
