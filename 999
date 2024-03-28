@@ -1,0 +1,87 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+
+int evaluateExpression(const std::string& expression) {
+    std::stringstream ss(expression);
+    int result;
+    char op;
+    ss >> result;
+    while (ss >> op) {
+        int operand;
+        ss >> operand;
+        if (op == '+') {
+            result += operand;
+        } else if (op == '-') {
+            result -= operand;
+        }
+    }
+    return result;
+}
+#include <string>
+
+bool isValidExpression(const std::string& expression) {
+    for (char c : expression) {
+        if (!isdigit(c) && c != '+' && c != '-' && c != ' ') {
+            return false;
+        }
+    }
+    return true;
+}
+#include <fstream>
+
+void createInputFile() {
+    std::ofstream file("input.txt");
+    if (file.is_open()) {
+        file << "4 + 7 - 2 - 8\n";
+        file << "10 - 5 + 3\n";
+        file << "6 + 9 - 1\n";
+        file << "20 - 15 - 2\n";
+        file << "3 + 5 + 7\n";
+        file << "8 - 4 - 2\n";
+        file << "9 + 2 - 1 - 5\n";
+        file << "15 - 6 + 4\n";
+        file << "20 - 8 + 9\n";
+        file << "7 + 3 - 1\n";
+        file.close();
+    }
+}
+#include <iostream>
+#include <fstream>
+
+int evaluateExpression(const std::string& expression) {
+    // Реалізація evaluateExpression з попереднього коду
+}
+
+bool isValidExpression(const std::string& expression) {
+    // Реалізація isValidExpression з попереднього коду
+}
+
+void processFile(const std::string& filename) {
+    std::ifstream file(filename);
+    std::string line;
+    std::ofstream output("output.txt");
+    if (file.is_open() && output.is_open()) {
+        while (std::getline(file, line)) {
+            if (isValidExpression(line)) {
+                int result = evaluateExpression(line);
+                output << "Expression: " << line << ", Result: " << result << std::endl;
+            } else {
+                output << "Invalid expression: " << line << std::endl;
+            }
+        }
+        file.close();
+        output.close();
+    } else {
+        std::cerr << "Unable to open file." << std::endl;
+    }
+}
+int main() {
+    createInputFile();
+    std::string filename;
+    std::cout << "Enter input filename: ";
+    std::cin >> filename;
+    processFile(filename);
+    std::cout << "Output has been written to output.txt." << std::endl;
+    return 0;
+}
